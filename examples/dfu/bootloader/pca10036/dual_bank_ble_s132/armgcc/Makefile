@@ -98,7 +98,7 @@ BUILD_DIRECTORIES := $(sort $(OBJECT_DIRECTORY) $(OUTPUT_BINARY_DIRECTORY) $(LIS
 CFLAGS  = -DSWI_DISABLE0
 CFLAGS += -DSOFTDEVICE_PRESENT
 CFLAGS += -DNRF52
-CFLAGS += -DBOARD_PCA10036
+CFLAGS += -DBOARD_PCA10040
 CFLAGS += -DBLE_STACK_SUPPORT_REQD
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
 CFLAGS += -D__HEAP_SIZE=0
@@ -221,10 +221,16 @@ clean:
 cleanobj:
 	$(RM) $(BUILD_DIRECTORIES)/*.o
 
-flash: $(MAKECMDGOALS)
+flash: nrf52832_xxaa_s132
 	@echo Flashing: $(OUTPUT_BINARY_DIRECTORY)/$<.hex
-	nrfjprog --erasepage - -f nrf52
+	nrfjprog --erasepage 0x1f000-0x80000 -f nrf52
 	nrfjprog --program $(OUTPUT_BINARY_DIRECTORY)/$<.hex -f nrf52
-	nrfjprog --reset
+	nrfjprog --reset -f nrf52
 
 ## Flash softdevice
+flash_softdevice:
+	@echo Flashing: s132_nrf52_1.0.0-3.alpha_softdevice.hex
+	nrfjprog --eraseall -f nrf52
+	nrfjprog --program ../../../../../../components/softdevice/s132/hex/s132_nrf52_1.0.0-3.alpha_softdevice.hex -f nrf52
+	nrfjprog --reset -f nrf52
+
