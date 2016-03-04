@@ -3,3 +3,4 @@
 *.bin
 *.elf
 *.hex
+_build
