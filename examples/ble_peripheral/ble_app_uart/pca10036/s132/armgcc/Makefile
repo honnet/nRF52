@@ -230,7 +230,7 @@ flash: nrf52832_xxaa_s132
 ## Flash softdevice
 flash_softdevice:
 	@echo Flashing: s132_nrf52_1.0.0-3.alpha_softdevice.hex
-	nrfjprog --erasepage 0x0-0x1f000 -f nrf52
+	nrfjprog --eraseall -f nrf52
 	nrfjprog --program ../../../../../../components/softdevice/s132/hex/s132_nrf52_1.0.0-3.alpha_softdevice.hex -f nrf52
 	nrfjprog --reset -f nrf52
 
