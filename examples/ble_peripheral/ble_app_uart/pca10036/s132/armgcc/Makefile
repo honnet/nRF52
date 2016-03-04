@@ -225,11 +225,11 @@ flash: $(MAKECMDGOALS)
 	@echo Flashing: $(OUTPUT_BINARY_DIRECTORY)/$<.hex
 	nrfjprog --erasepage 0x1f000-0x80000 -f nrf52
 	nrfjprog --program $(OUTPUT_BINARY_DIRECTORY)/$<.hex -f nrf52
-	nrfjprog --reset
+	nrfjprog --reset -f nrf52
 
 ## Flash softdevice
 flash_softdevice:
 	@echo Flashing: s132_nrf52_1.0.0-3.alpha_softdevice.hex
 	nrfjprog --erasepage 0x0-0x1f000 -f nrf52
 	nrfjprog --program ../../../../../../components/softdevice/s132/hex/s132_nrf52_1.0.0-3.alpha_softdevice.hex -f nrf52
-	nrfjprog --reset
+	nrfjprog --reset -f nrf52
