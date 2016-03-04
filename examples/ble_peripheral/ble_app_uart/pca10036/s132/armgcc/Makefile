@@ -234,3 +234,5 @@ flash_softdevice:
 	nrfjprog --program ../../../../../../components/softdevice/s132/hex/s132_nrf52_1.0.0-3.alpha_softdevice.hex -f nrf52
 	nrfjprog --reset -f nrf52
 
+flash_all: flash_softdevice flash
+
