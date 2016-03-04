@@ -75,7 +75,7 @@ static ble_uuid_t                       m_adv_uuids[] = {{BLE_UUID_NUS_SERVICE, 
  *
  * @details This function will be called in case of an assert in the SoftDevice.
  *
- * @warning This handler is an example only and does not fit a final product. You need to analyse 
+ * @warning This handler is an example only and does not fit a final product. You need to analyse
  *          how your product is supposed to react in case of Assert.
  * @warning On assert from the SoftDevice, the system can only recover on reset.
  *
@@ -90,7 +90,7 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 
 /**@brief Function for the GAP initialization.
  *
- * @details This function will set up all the necessary GAP (Generic Access Profile) parameters of 
+ * @details This function will set up all the necessary GAP (Generic Access Profile) parameters of
  *          the device. It also sets the permissions and appearance.
  */
 static void gap_params_init(void)
@@ -100,7 +100,7 @@ static void gap_params_init(void)
     ble_gap_conn_sec_mode_t sec_mode;
 
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
-    
+
     err_code = sd_ble_gap_device_name_set(&sec_mode,
                                           (const uint8_t *) DEVICE_NAME,
                                           strlen(DEVICE_NAME));
@@ -145,11 +145,11 @@ static void services_init(void)
 {
     uint32_t       err_code;
     ble_nus_init_t nus_init;
-    
+
     memset(&nus_init, 0, sizeof(nus_init));
 
     nus_init.data_handler = nus_data_handler;
-    
+
     err_code = ble_nus_init(&m_nus, &nus_init);
     APP_ERROR_CHECK(err_code);
 }
@@ -169,7 +169,7 @@ static void services_init(void)
 static void on_conn_params_evt(ble_conn_params_evt_t * p_evt)
 {
     uint32_t err_code;
-    
+
     if(p_evt->evt_type == BLE_CONN_PARAMS_EVT_FAILED)
     {
         err_code = sd_ble_gap_disconnect(m_conn_handle, BLE_HCI_CONN_INTERVAL_UNACCEPTABLE);
@@ -194,7 +194,7 @@ static void conn_params_init(void)
 {
     uint32_t               err_code;
     ble_conn_params_init_t cp_init;
-    
+
     memset(&cp_init, 0, sizeof(cp_init));
 
     cp_init.p_conn_params                  = NULL;
@@ -205,7 +205,7 @@ static void conn_params_init(void)
     cp_init.disconnect_on_fail             = false;
     cp_init.evt_handler                    = on_conn_params_evt;
     cp_init.error_handler                  = conn_params_error_handler;
-    
+
     err_code = ble_conn_params_init(&cp_init);
     APP_ERROR_CHECK(err_code);
 }
@@ -262,7 +262,7 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
 static void on_ble_evt(ble_evt_t * p_ble_evt)
 {
     uint32_t                         err_code;
-    
+
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
@@ -270,7 +270,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
             APP_ERROR_CHECK(err_code);
             m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
             break;
-            
+
         case BLE_GAP_EVT_DISCONNECTED:
             err_code = bsp_indication_set(BSP_INDICATE_IDLE);
             APP_ERROR_CHECK(err_code);
@@ -296,10 +296,10 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
 }
 
 
-/**@brief Function for dispatching a S110 SoftDevice event to all modules with a S110 SoftDevice 
+/**@brief Function for dispatching a S110 SoftDevice event to all modules with a S110 SoftDevice
  *        event handler.
  *
- * @details This function is called from the S110 SoftDevice event interrupt handler after a S110 
+ * @details This function is called from the S110 SoftDevice event interrupt handler after a S110
  *          SoftDevice event has been received.
  *
  * @param[in] p_ble_evt  S110 SoftDevice event.
@@ -311,7 +311,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
     on_ble_evt(p_ble_evt);
     ble_advertising_on_ble_evt(p_ble_evt);
     bsp_btn_ble_on_ble_evt(p_ble_evt);
-    
+
 }
 
 
@@ -322,7 +322,7 @@ static void ble_evt_dispatch(ble_evt_t * p_ble_evt)
 static void ble_stack_init(void)
 {
     uint32_t err_code;
-    
+
     // Initialize SoftDevice.
     SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_20_PPM, NULL);
 
@@ -335,7 +335,7 @@ static void ble_stack_init(void)
     ble_enable_params.gatts_enable_params.service_changed = IS_SRVC_CHANGED_CHARACT_PRESENT;
     err_code = sd_ble_enable(&ble_enable_params);
     APP_ERROR_CHECK(err_code);
-    
+
     // Subscribe for BLE events.
     err_code = softdevice_ble_evt_handler_set(ble_evt_dispatch);
     APP_ERROR_CHECK(err_code);
@@ -379,9 +379,9 @@ void bsp_event_handler(bsp_event_t event)
 
 /**@brief   Function for handling app_uart events.
  *
- * @details This function will receive a single character from the app_uart module and append it to 
- *          a string. The string will be be sent over BLE when the last character received was a 
- *          'new line' i.e '\n' (hex 0x0D) or if the string has reached a length of 
+ * @details This function will receive a single character from the app_uart module and append it to
+ *          a string. The string will be be sent over BLE when the last character received was a
+ *          'new line' i.e '\n' (hex 0x0D) or if the string has reached a length of
  *          @ref NUS_MAX_DATA_LENGTH.
  */
 /**@snippet [Handling the data received over UART] */
@@ -404,7 +404,7 @@ void uart_event_handle(app_uart_evt_t * p_event)
                 {
                     APP_ERROR_CHECK(err_code);
                 }
-                
+
                 index = 0;
             }
             break;
@@ -489,7 +489,7 @@ static void buttons_leds_init(bool * p_erase_bonds)
     bsp_event_t startup_event;
 
     uint32_t err_code = bsp_init(BSP_INIT_LED | BSP_INIT_BUTTONS,
-                                 APP_TIMER_TICKS(100, APP_TIMER_PRESCALER), 
+                                 APP_TIMER_TICKS(100, APP_TIMER_PRESCALER),
                                  bsp_event_handler);
     APP_ERROR_CHECK(err_code);
 
@@ -516,7 +516,7 @@ int main(void)
     uint32_t err_code;
     bool erase_bonds;
     uint8_t  start_string[] = START_STRING;
-    
+
     // Initialize.
     APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_MAX_TIMERS, APP_TIMER_OP_QUEUE_SIZE, false);
     uart_init();
@@ -526,12 +526,12 @@ int main(void)
     services_init();
     advertising_init();
     conn_params_init();
-    
+
     printf("%s",start_string);
 
     err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
     APP_ERROR_CHECK(err_code);
-    
+
     // Enter main loop.
     for (;;)
     {
@@ -540,6 +540,6 @@ int main(void)
 }
 
 
-/** 
+/**
  * @}
  */
